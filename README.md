@@ -3,7 +3,7 @@
 
 **DSA210 - Introduction to Data Science | Fall 2025-2026**
 
-**Student:** Miray Erkoc
+**Student:** Miray Erkoc| 30815
 
 ---
 
@@ -118,3 +118,17 @@ Model evaluation and validation
 
 This work is original and created for *DSA 210 – Introduction to Data Science*.  
 AI tools (e.g., LLMs) are used only for writing assistance and debugging, following Sabancı University’s academic integrity policies.
+
+---
+
+## Author
+
+*Miray Erkoç*  
+Sabancı University  
+Fall 2025-2026  
+DSA 210 – Introduction to Data Science  
+
+---
+
+*Last Updated:* October 30, 2025  
+*Project Status:* Proposal Stage
