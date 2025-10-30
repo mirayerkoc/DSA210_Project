@@ -59,18 +59,32 @@ Validate timestamp alignment between datasets
 Document data collection challenges and limitation
 
 ---
-Research Questions
+## Research Questions
 
 These or similar questions are planned to be investigated.
 
-Correlation Analysis: Is there a significant relationship between traffic volume and air pollution levels?
-Temporal Patterns: How do pollution levels vary across different times of day, days of week, and seasons?
-Holiday Effect: Do special holidays and weekends show measurably different air quality patterns?
-Time Lag: What is the optimal time delay between traffic measurements and air quality impact?
-AQI Prediction: Can traffic patterns predict air quality category transitions?
+- Correlation Analysis: Is there a significant relationship between traffic volume and air pollution levels?
+- Temporal Patterns: How do pollution levels vary across different times of day, days of week, and seasons?
+- Holiday Effect: Do special holidays and weekends show measurably different air quality patterns?
+- Time Lag: What is the optimal time delay between traffic measurements and air quality impact?
+- AQI Prediction: Can traffic patterns predict air quality category transitions?
+
+## Research Hypotheses
+
+It is envisaged that this or similar hypotheses will be tested.
+
+**H1:** Traffic density (vehicle count) is positively correlated with air pollution levels (NO2, PM10)
+
+**H2:** The correlation between traffic and pollution is stronger with a 2-hour time lag due to emission dispersion
+
+**H3:** Holidays and special observances show significantly lower traffic and pollution compared to normal days
+
+**H4:** Weekend air quality is better than weekdays due to reduced commuter traffic
+
+**H5:** Rush hours (7-9 AM, 5-7 PM) exhibit peak pollution levels
 
 
-Planned Methodology
+## Planned Methodology
 
 It is envisaged that these or similar methodologies will be used
 
@@ -101,3 +115,6 @@ Feature selection based on correlation and domain knowledge
 Machine learning models (Random Forest, XGBoost, etc.) for pollution prediction
 Time series forecasting (ARIMA, LSTM, etc.) for air quality trends
 Model evaluation and validation
+
+This work is original and created for *DSA 210 – Introduction to Data Science*.  
+AI tools (e.g., LLMs) are used only for writing assistance and debugging, following Sabancı University’s academic integrity policies.
