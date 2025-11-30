@@ -322,7 +322,7 @@ Stage 3: Feature Engineering
 
 ### Sample Visualizations
 
-All visualizations are available in high resolution (300 DPI) in the `visualizations/visualizations_eda/` directory.
+All visualizations are available in high resolution (300 DPI) in the `EDA/visualizations_eda/` directory.
 
 **Key Visualizations Include:**
 
@@ -415,9 +415,5 @@ Semester: Fall 2025-2026
 
 **Last Updated:** November 30, 2024  
 **Project Status:**  Analysis Complete 
-**Course:** DSA 210 – Introduction to Data Science  
-**Institution:** Sabancı University
 
 ---
-
-*This README provides comprehensive documentation of the research project examining the relationship between traffic density and air quality in Istanbul. For questions or additional information, please refer to the analysis scripts and Jupyter notebooks included in this repository.*
