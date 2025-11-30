@@ -322,7 +322,7 @@ Stage 3: Feature Engineering
 
 ### Sample Visualizations
 
-All visualizations are available in high resolution (300 DPI) in the `EDA/visualizations_eda/` directory.
+All visualizations are available in high resolution (300 DPI) in the [visualizations_eda](EDA/ visualizations_eda) directory.
 
 **Key Visualizations Include:**
 
