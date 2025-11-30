@@ -1,169 +1,226 @@
 ================================================================================
-STATISTICAL HYPOTHESIS TESTING: TRAFFIC & AIR QUALITY
+EXPLORATORY DATA ANALYSIS: TRAFFIC & AIR QUALITY
 ================================================================================
 Student ID: 30815
 Analysis Date: 2025-11-x x:x:x
 
 Loading dataset...
 Successfully loaded: 8,027 observations, 52 variables
+Time range: 2024-01-01 00:00:00 to 2024-12-31 23:00:00
+Duration: 365 days
 
 ================================================================================
-H1: TRAFFIC-POLLUTION CORRELATION ANALYSIS
+SECTION 1: DATASET CHARACTERISTICS
 ================================================================================
 
-Test 1: Vehicle Count ↔ NO2
-  Sample size: 7,889
-  Pearson r: -0.0143
-  P-value: 0.203841
-  Result: Not significant (p >= 0.05)
+Dimensions:
+  Rows (observations): 8,027
+  Columns (variables): 52
+  Time period: 2024-01-01 to 2024-12-31
+  Sampling frequency: Hourly
 
-Test 2: Vehicle Count ↔ PM10
-  Sample size: 7,635
-  Pearson r: 0.0782
-  P-value: 0.000000
-  Result: Highly significant (p < 0.001)
+Variable Types:
+float64           23
+object            15
+int64             13
+datetime64[ns]     1
+Name: count, dtype: int64
 
-Test 3: Traffic Density ↔ NO2
-  Sample size: 7,889
-  Pearson r: 0.0029
-  P-value: 0.797065
-  Result: Not significant (p >= 0.05)
+First few rows:
+    LATITUDE  LONGITUDE GEOHASH  ...  vehicles_lag3  speed_lag3  no2_lag3
+0  40.992737  29.075317  sxk9jw  ...            NaN         NaN       NaN
+1  40.992737  29.075317  sxk9jw  ...            NaN         NaN       NaN
+2  40.992737  29.075317  sxk9jw  ...            NaN         NaN       NaN
+3  40.992737  29.075317  sxk9jw  ...          227.0        55.0      64.7
+4  40.992737  29.075317  sxk9jw  ...          206.0        61.0      66.1
 
-================================================================================
-H1 SUMMARY:
-  Significant tests: 1/3
-  Result: SUPPORTED (1/3 tests significant)
-================================================================================
+[5 rows x 52 columns]
 
-================================================================================
-H2: TIME LAG EFFECT ANALYSIS
-================================================================================
-Testing hypothesis: Traffic impacts pollution with 2-hour delay
+Basic statistics:
+           LATITUDE    LONGITUDE  ...   speed_lag3    no2_lag3
+count  8.027000e+03  8027.000000  ...  8024.000000  7886.00000
+mean   4.099274e+01    29.075317  ...    46.349701    60.40038
+min    4.099274e+01    29.075317  ...     4.000000     7.10000
+25%    4.099274e+01    29.075317  ...    31.000000    41.10000
+50%    4.099274e+01    29.075317  ...    50.000000    55.70000
+75%    4.099274e+01    29.075317  ...    60.000000    75.40000
+max    4.099274e+01    29.075317  ...    80.000000   302.10000
+std    4.263522e-14     0.000000  ...    15.577746    27.20353
 
-Lag 0h (immediate): r=-0.0143, p=0.203841 (not significant)
-Lag 1h: r=-0.0954, p=0.000000 (significant)
-Lag 2h: r=-0.1380, p=0.000000 (significant)
-Lag 3h: r=-0.1392, p=0.000000 (significant)
-Lag 4h: r=0.0188, p=0.095608 (not significant)
-Lag 5h: r=-0.0071, p=0.526496 (not significant)
-Lag 6h: r=-0.0021, p=0.855183 (not significant)
-
-================================================================================
-H2 SUMMARY:
-  Optimal lag period: 3 hours
-  Correlation: r = -0.1392
-  P-value: p = 0.000000
-  Result: Highly significant (p < 0.001)
-  Conclusion: PARTIALLY SUPPORTED (3h lag optimal, not 2h)
-================================================================================
+[8 rows x 37 columns]
 
 ================================================================================
-H3: HOLIDAY/SPECIAL DAY EFFECT
+SECTION 2: MISSING DATA ANALYSIS
 ================================================================================
 
-Sample Sizes:
-  Normal days: 7,450
-  Special days: 577
-
-Test 1: Vehicle Count Comparison
-  Normal days mean: 382.2 vehicles
-  Special days mean: 261.2 vehicles
-  Difference: 120.9 vehicles
-  Percentage change: -31.6%
-  t-statistic: 13.0658
-  P-value: 0.000000
-  Cohen's d: 0.5646 (medium effect)
-  Result: Highly significant (p < 0.001)
-
-Test 2: NO2 Concentration Comparison
-  Normal days mean: 61.41 µg/m³
-  Special days mean: 47.03 µg/m³
-  Difference: 14.38 µg/m³
-  Percentage change: -23.4%
-  t-statistic: 11.9629
-  P-value: 0.000000
-  Cohen's d: 0.5329 (medium effect)
-  Result: Highly significant (p < 0.001)
+Variables with missing data:
+                   Missing_Count  Percentage
+Concentration_SO2           8027  100.000000
+AQI_O3                      8027  100.000000
+Concentration               8027  100.000000
+Concentration_O3            8027  100.000000
+AQI_SO2                     8027  100.000000
+AQI_PM10                     392    4.883518
+no2_lag3                     141    1.756572
+no2_lag2                     140    1.744114
+no2_lag1                     139    1.731656
+AQI_NO2                      138    1.719198
 
 ================================================================================
-H3 SUMMARY:
-  Result: SUPPORTED (2/2 tests significant)
+SECTION 3: TRAFFIC FLOW STATISTICS
 ================================================================================
 
-================================================================================
-H4: WEEKEND EFFECT
-================================================================================
+Vehicle Count (hourly):
+  Mean: 373.5 vehicles/hour
+  Median: 344.0
+  Std Dev: 216.4
+  Min: 1
+  Max: 1169
+  Q1 (25%): 206.0
+  Q3 (75%): 535.0
 
-Sample Sizes:
-  Weekdays: 5,735
-  Weekends: 2,292
+Average Speed:
+  Mean: 46.4 km/h
+  Median: 50.0 km/h
+  Std Dev: 15.6 km/h
+  Min: 4.0 km/h
+  Max: 80.0 km/h
 
-Test 1: Vehicle Count Comparison
-  Weekday mean: 414.8 vehicles
-  Weekend mean: 270.1 vehicles
-  Difference: 144.7 vehicles
-  Percentage change: -34.9%
-  t-statistic: 28.3820
-  P-value: 0.000000
-  Cohen's d: 0.7014 (medium effect)
-  Result: Highly significant (p < 0.001)
-
-Test 2: NO2 Concentration Comparison
-  Weekday mean: 62.14 µg/m³
-  Weekend mean: 56.07 µg/m³
-  Difference: 6.07 µg/m³
-  Percentage change: -9.8%
-  t-statistic: 8.9519
-  P-value: 0.000000
-  Cohen's d: 0.2239 (small effect)
-  Result: Highly significant (p < 0.001)
+Traffic Density:
+  Mean: 10.42
+  Median: 7.57
+  Std Dev: 8.68
 
 ================================================================================
-H4 SUMMARY:
-  Result: SUPPORTED (2/2 tests significant)
+SECTION 4: AIR QUALITY STATISTICS
 ================================================================================
 
-================================================================================
-H5: RUSH HOUR POLLUTION PEAKS
-================================================================================
+NO2 Concentration (µg/m³):
+  Mean: 60.42
+  Median: 55.70
+  Std Dev: 27.23
+  Min: 7.10
+  Max: 302.10
 
-Sample Sizes:
-  Morning rush (7-9h): 1,010
-  Evening rush (17-19h): 989
-  Other hours: 6,028
+PM10 AQI:
+  Mean: 66.97
+  Median: 55.00
+  Max: 305.00
 
-NO2 Concentration by Time Period:
-  Morning rush: 71.23 µg/m³ (SD: 30.71)
-  Evening rush: 57.91 µg/m³ (SD: 21.72)
-  Other hours: 59.03 µg/m³ (SD: 27.01)
-
-One-way ANOVA Results:
-  F-statistic: 91.7747
-  P-value: 0.000000
-  Result: Highly significant (p < 0.001)
-
-Post-hoc Pairwise Comparisons:
-  Morning vs Evening: t=11.0783, p=0.000000 (Highly significant (p < 0.001))
-  Morning vs Other: t=12.8730, p=0.000000 (Highly significant (p < 0.001))
-  Evening vs Other: t=-1.2333, p=0.217493 (Not significant (p >= 0.05))
+CO Concentration:
+  Mean: 985.28
+  Median: 872.60
 
 ================================================================================
-H5 SUMMARY:
-  Result: SUPPORTED (significant differences across time periods)
+SECTION 5: TEMPORAL PATTERNS
 ================================================================================
 
+Weekday vs Weekend Distribution:
+  Weekdays: 5,735 observations (71.4%)
+  Weekends: 2,292 observations (28.6%)
+
+Traffic Comparison:
+  Weekday avg: 414.8 vehicles
+  Weekend avg: 270.1 vehicles
+  Difference: -34.9%
+
+Special Days:
+  Count: 577 observations
+  Percentage: 7.2%
+
+Seasonal Distribution:
+  Sonbahar: 2,186 observations (27.2%)
+  Yaz: 2,116 observations (26.4%)
+  İlkbahar: 2,112 observations (26.3%)
+  Kış: 1,613 observations (20.1%)
+
 ================================================================================
-HYPOTHESIS TESTING - FINAL SUMMARY
+SECTION 6: CORRELATION ANALYSIS
 ================================================================================
 
-All Hypothesis Results:
+Correlation Matrix:
+                    NUMBER_OF_VEHICLES  ...  Concentration_CO
+NUMBER_OF_VEHICLES               1.000  ...            -0.176
+AVERAGE_SPEED                   -0.755  ...             0.208
+traffic_density                  0.895  ...            -0.179
+Concentration_NO2               -0.014  ...             0.501
+AQI_PM10                         0.078  ...             0.216
+Concentration_CO                -0.176  ...             1.000
 
-  H1 (Traffic ↔ Pollution): SUPPORTED (1/3 tests significant)
-  H2 (2-hour lag effect): PARTIALLY SUPPORTED (3h lag optimal, not 2h)
-  H3 (Holiday effect): SUPPORTED (2/2 tests significant)
-  H4 (Weekend effect): SUPPORTED (2/2 tests significant)
-  H5 (Rush hour peaks): SUPPORTED (significant ANOVA)
+[6 rows x 6 columns]
+
+Strong Correlations (|r| > 0.3):
+  NUMBER_OF_VEHICLES ↔ AVERAGE_SPEED: r=-0.755 (strong negative)
+  NUMBER_OF_VEHICLES ↔ traffic_density: r=0.895 (strong positive)
+  AVERAGE_SPEED ↔ traffic_density: r=-0.889 (strong negative)
+  Concentration_NO2 ↔ Concentration_CO: r=0.501 (moderate positive)
 
 ================================================================================
-HYPOTHESIS TESTING COMPLETED SUCCESSFULLY
+SECTION 7: CATEGORICAL VARIABLE ANALYSIS
+================================================================================
+
+Vehicle Category Distribution:
+  Az: 2,016 (25.1%)
+  Yoğun: 2,006 (25.0%)
+  Çok Yoğun: 2,006 (25.0%)
+  Orta: 1,999 (24.9%)
+
+  Mean NO2 by Vehicle Category:
+    Az: 61.03 µg/m³
+    Yoğun: 59.55 µg/m³
+    Çok Yoğun: 60.16 µg/m³
+    Orta: 60.97 µg/m³
+
+Speed Category Distribution:
+  Orta: 3,820 (47.6%)
+  Yavaş: 2,117 (26.4%)
+  Çok Yavaş: 1,971 (24.6%)
+  Hızlı: 119 (1.5%)
+
+AQI Category Distribution:
+  İyi: 3,408 (42.5%)
+  Orta: 3,298 (41.1%)
+  Hassas İçin Kötü: 1,252 (15.6%)
+  Çok Sağlıksız: 57 (0.7%)
+  Veri Yok: 9 (0.1%)
+  Tehlikeli: 3 (0.0%)
+
+Rush Hour Distribution:
+  Diğer Saatler: 6,028 (75.1%)
+  Sabah Rush (7-9): 1,010 (12.6%)
+  Akşam Rush (17-19): 989 (12.3%)
+
+================================================================================
+SECTION 8: GENERATING VISUALIZATIONS
+================================================================================
+
+[1/10] Time series with special day markers...
+  Saved: 1_timeseries.png
+[2/10] Hourly traffic and pollution patterns...
+  Saved: 2_hourly_patterns.png
+[3/10] Weekday/Weekend/Special day comparison...
+  Saved: 3_day_comparison.png
+[4/10] Correlation heatmap...
+  Saved: 4_correlation_matrix.png
+[5/10] Scatter plots...
+  Saved: 5_scatter_plots.png
+[6/10] Distribution histograms...
+  Saved: 6_distributions.png
+[7/10] Monthly trends...
+  Saved: 7_monthly_trends.png
+[8/10] Lag correlation analysis...
+  Saved: 8_lag_analysis.png
+[9/10] Categorical variable analysis...
+  Saved: 9_categorical_analysis.png
+[10/10] Seasonal patterns...
+  Saved: 10_seasonal_analysis.png
+
+================================================================================
+EDA COMPLETED SUCCESSFULLY
+================================================================================
+
+Output Directory: /Users/x/Desktop/visualizations_eda
+  10 visualizations generated (300 DPI)
+  All exploratory analysis complete
+
 ================================================================================
