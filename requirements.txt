@@ -1,0 +1,24 @@
+# DSA210 Traffic & Air Quality Analysis
+# Required Python packages
+
+# Data manipulation
+pandas>=2.0.0
+numpy>=1.24.0
+
+# Statistical analysis
+scipy>=1.10.0
+statsmodels>=0.14.0
+
+# Visualization
+matplotlib>=3.7.0
+seaborn>=0.12.0
+
+# Data collection
+requests>=2.31.0
+
+# Excel support (optnl)
+openpyxl>=3.1.0
+
+
+# Progress bars (optnl)
+tqdm>=4.65.0
