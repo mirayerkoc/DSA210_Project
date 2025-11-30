@@ -1,0 +1,169 @@
+================================================================================
+STATISTICAL HYPOTHESIS TESTING: TRAFFIC & AIR QUALITY
+================================================================================
+Student ID: 30815
+Analysis Date: 2025-11-x x:x:x
+
+Loading dataset...
+Successfully loaded: 8,027 observations, 52 variables
+
+================================================================================
+H1: TRAFFIC-POLLUTION CORRELATION ANALYSIS
+================================================================================
+
+Test 1: Vehicle Count ↔ NO2
+  Sample size: 7,889
+  Pearson r: -0.0143
+  P-value: 0.203841
+  Result: Not significant (p >= 0.05)
+
+Test 2: Vehicle Count ↔ PM10
+  Sample size: 7,635
+  Pearson r: 0.0782
+  P-value: 0.000000
+  Result: Highly significant (p < 0.001)
+
+Test 3: Traffic Density ↔ NO2
+  Sample size: 7,889
+  Pearson r: 0.0029
+  P-value: 0.797065
+  Result: Not significant (p >= 0.05)
+
+================================================================================
+H1 SUMMARY:
+  Significant tests: 1/3
+  Result: SUPPORTED (1/3 tests significant)
+================================================================================
+
+================================================================================
+H2: TIME LAG EFFECT ANALYSIS
+================================================================================
+Testing hypothesis: Traffic impacts pollution with 2-hour delay
+
+Lag 0h (immediate): r=-0.0143, p=0.203841 (not significant)
+Lag 1h: r=-0.0954, p=0.000000 (significant)
+Lag 2h: r=-0.1380, p=0.000000 (significant)
+Lag 3h: r=-0.1392, p=0.000000 (significant)
+Lag 4h: r=0.0188, p=0.095608 (not significant)
+Lag 5h: r=-0.0071, p=0.526496 (not significant)
+Lag 6h: r=-0.0021, p=0.855183 (not significant)
+
+================================================================================
+H2 SUMMARY:
+  Optimal lag period: 3 hours
+  Correlation: r = -0.1392
+  P-value: p = 0.000000
+  Result: Highly significant (p < 0.001)
+  Conclusion: PARTIALLY SUPPORTED (3h lag optimal, not 2h)
+================================================================================
+
+================================================================================
+H3: HOLIDAY/SPECIAL DAY EFFECT
+================================================================================
+
+Sample Sizes:
+  Normal days: 7,450
+  Special days: 577
+
+Test 1: Vehicle Count Comparison
+  Normal days mean: 382.2 vehicles
+  Special days mean: 261.2 vehicles
+  Difference: 120.9 vehicles
+  Percentage change: -31.6%
+  t-statistic: 13.0658
+  P-value: 0.000000
+  Cohen's d: 0.5646 (medium effect)
+  Result: Highly significant (p < 0.001)
+
+Test 2: NO2 Concentration Comparison
+  Normal days mean: 61.41 µg/m³
+  Special days mean: 47.03 µg/m³
+  Difference: 14.38 µg/m³
+  Percentage change: -23.4%
+  t-statistic: 11.9629
+  P-value: 0.000000
+  Cohen's d: 0.5329 (medium effect)
+  Result: Highly significant (p < 0.001)
+
+================================================================================
+H3 SUMMARY:
+  Result: SUPPORTED (2/2 tests significant)
+================================================================================
+
+================================================================================
+H4: WEEKEND EFFECT
+================================================================================
+
+Sample Sizes:
+  Weekdays: 5,735
+  Weekends: 2,292
+
+Test 1: Vehicle Count Comparison
+  Weekday mean: 414.8 vehicles
+  Weekend mean: 270.1 vehicles
+  Difference: 144.7 vehicles
+  Percentage change: -34.9%
+  t-statistic: 28.3820
+  P-value: 0.000000
+  Cohen's d: 0.7014 (medium effect)
+  Result: Highly significant (p < 0.001)
+
+Test 2: NO2 Concentration Comparison
+  Weekday mean: 62.14 µg/m³
+  Weekend mean: 56.07 µg/m³
+  Difference: 6.07 µg/m³
+  Percentage change: -9.8%
+  t-statistic: 8.9519
+  P-value: 0.000000
+  Cohen's d: 0.2239 (small effect)
+  Result: Highly significant (p < 0.001)
+
+================================================================================
+H4 SUMMARY:
+  Result: SUPPORTED (2/2 tests significant)
+================================================================================
+
+================================================================================
+H5: RUSH HOUR POLLUTION PEAKS
+================================================================================
+
+Sample Sizes:
+  Morning rush (7-9h): 1,010
+  Evening rush (17-19h): 989
+  Other hours: 6,028
+
+NO2 Concentration by Time Period:
+  Morning rush: 71.23 µg/m³ (SD: 30.71)
+  Evening rush: 57.91 µg/m³ (SD: 21.72)
+  Other hours: 59.03 µg/m³ (SD: 27.01)
+
+One-way ANOVA Results:
+  F-statistic: 91.7747
+  P-value: 0.000000
+  Result: Highly significant (p < 0.001)
+
+Post-hoc Pairwise Comparisons:
+  Morning vs Evening: t=11.0783, p=0.000000 (Highly significant (p < 0.001))
+  Morning vs Other: t=12.8730, p=0.000000 (Highly significant (p < 0.001))
+  Evening vs Other: t=-1.2333, p=0.217493 (Not significant (p >= 0.05))
+
+================================================================================
+H5 SUMMARY:
+  Result: SUPPORTED (significant differences across time periods)
+================================================================================
+
+================================================================================
+HYPOTHESIS TESTING - FINAL SUMMARY
+================================================================================
+
+All Hypothesis Results:
+
+  H1 (Traffic ↔ Pollution): SUPPORTED (1/3 tests significant)
+  H2 (2-hour lag effect): PARTIALLY SUPPORTED (3h lag optimal, not 2h)
+  H3 (Holiday effect): SUPPORTED (2/2 tests significant)
+  H4 (Weekend effect): SUPPORTED (2/2 tests significant)
+  H5 (Rush hour peaks): SUPPORTED (significant ANOVA)
+
+================================================================================
+HYPOTHESIS TESTING COMPLETED SUCCESSFULLY
+================================================================================
