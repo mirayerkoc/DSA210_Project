@@ -1,0 +1,238 @@
+# =============================================================================
+# DSA210 - Traffic & Air Quality Analysis - Complete Requirements
+# Istanbul D-100 Highway Analysis Project
+# =============================================================================
+# Author: Miray Erkoc (30815)
+# Course: DSA210 - Introduction to Data Science
+# Semester: Fall 2025-2026
+# Python Version: 3.8+
+# =============================================================================
+
+# CORE DATA SCIENCE LIBRARIES
+# -----------------------------------------------------------------------------
+pandas>=2.0.0              # Data manipulation and analysis
+numpy>=1.24.0              # Numerical computing
+scipy>=1.10.0              # Scientific computing and statistical tests
+
+# STATISTICAL ANALYSIS
+# -----------------------------------------------------------------------------
+statsmodels>=0.14.0        # Advanced statistical models and hypothesis testing
+
+# MACHINE LEARNING
+# -----------------------------------------------------------------------------
+scikit-learn>=1.3.0        # ML algorithms, cross-validation, preprocessing
+xgboost>=2.0.0             # Gradient boosting (primary forecasting model)
+lightgbm>=4.0.0            # Fast gradient boosting (alternative model)
+joblib>=1.3.0              # Model serialization and parallel processing
+
+# VISUALIZATION
+# -----------------------------------------------------------------------------
+matplotlib>=3.7.0          # Core plotting library
+seaborn>=0.12.0            # Statistical data visualization
+
+# DATA COLLECTION
+# -----------------------------------------------------------------------------
+requests>=2.31.0           # HTTP requests for API data collection
+
+# FILE I/O SUPPORT
+# -----------------------------------------------------------------------------
+openpyxl>=3.1.0            # Excel file support (.xlsx)
+
+# PROGRESS TRACKING
+# -----------------------------------------------------------------------------
+tqdm>=4.65.0               # Progress bars for long-running operations
+
+# JUPYTER NOTEBOOK SUPPORT (OPTIONAL)
+# -----------------------------------------------------------------------------
+# Uncomment if using Jupyter notebooks:
+# jupyter>=1.0.0           # Jupyter notebook environment
+# ipykernel>=6.25.0        # IPython kernel for Jupyter
+# ipywidgets>=8.1.0        # Interactive widgets for notebooks
+
+# =============================================================================
+# INSTALLATION INSTRUCTIONS
+# =============================================================================
+#
+# Standard installation (all required packages):
+#   pip install -r requirements.txt
+#
+# Minimal installation (without optional dependencies):
+#   pip install pandas numpy scipy statsmodels scikit-learn xgboost matplotlib seaborn requests
+#
+# With Jupyter support:
+#   pip install -r requirements.txt jupyter ipykernel ipywidgets
+#
+# For GPU-accelerated XGBoost (optional, requires CUDA):
+#   pip install xgboost[gpu]
+#
+# For Apple Silicon (M1/M2/M3) Macs:
+#   conda install -c conda-forge xgboost lightgbm
+#
+# =============================================================================
+# PROJECT PHASES & PACKAGE USAGE
+# =============================================================================
+#
+# Phase 1: Data Collection (October-November 2024)
+#   - requests: API data extraction from IBB portals
+#   - pandas: Data cleaning and integration
+#
+# Phase 2: EDA & Hypothesis Testing (November 2024)
+#   - pandas, numpy: Data manipulation
+#   - scipy, statsmodels: Statistical tests (t-test, ANOVA, correlation)
+#   - matplotlib, seaborn: 10 high-quality visualizations
+#
+# Phase 3: Machine Learning (January 2026)
+#   - scikit-learn: Preprocessing, cross-validation, baseline models
+#   - xgboost, lightgbm: Advanced gradient boosting models
+#   - joblib: Model persistence
+#
+# =============================================================================
+# VERSION NOTES
+# =============================================================================
+#
+# Minimum versions specified for:
+#   - pandas 2.0+: Performance improvements, better datetime handling
+#   - scikit-learn 1.3+: TimeSeriesSplit enhancements for temporal data
+#   - xgboost 2.0+: Better missing value handling, faster training
+#   - lightgbm 4.0+: Performance optimizations, reduced memory usage
+#
+# Tested on:
+#   - Python 3.10.12
+#   - Operating Systems: Windows 10/11, macOS 13+, Ubuntu 22.04
+#
+# =============================================================================
+# KNOWN COMPATIBILITY ISSUES & SOLUTIONS
+# =============================================================================
+#
+# 1. LightGBM on Windows:
+#    Problem: May fail due to missing Visual C++ Redistributable
+#    Solution: Download and install from:
+#              https://visualstudio.microsoft.com/downloads/
+#
+# 2. XGBoost on older systems:
+#    Problem: Compilation errors on Python 3.7 or older
+#    Solution: Upgrade to Python 3.8+ or use older XGBoost:
+#              pip install xgboost==1.7.6
+#
+# 3. Apple Silicon (M1/M2/M3):
+#    Problem: pip wheels may not be optimized
+#    Solution: Use conda for native ARM64 builds:
+#              conda install -c conda-forge xgboost lightgbm scikit-learn
+#
+# 4. NumPy/SciPy installation errors:
+#    Problem: Missing BLAS/LAPACK libraries
+#    Solution: Install via conda:
+#              conda install numpy scipy
+#
+# =============================================================================
+# PERFORMANCE OPTIMIZATION (OPTIONAL)
+# =============================================================================
+#
+# For faster linear algebra operations:
+#   - Intel MKL (Intel CPUs):     conda install mkl mkl-service
+#   - OpenBLAS (All platforms):   conda install openblas
+#
+# For parallel processing:
+#   - Use n_jobs=-1 in scikit-learn (uses all CPU cores)
+#   - XGBoost automatically uses multithreading
+#   - LightGBM has built-in parallelization
+#
+# Memory optimization:
+#   - Use pandas dtypes efficiently (int32 vs int64, category dtype)
+#   - LightGBM uses less memory than XGBoost
+#
+# =============================================================================
+# VERIFICATION & TESTING
+# =============================================================================
+#
+# After installation, verify all packages:
+#   python -c "import pandas, numpy, scipy, statsmodels, sklearn, xgboost, lightgbm, matplotlib, seaborn; print('✓ All packages installed successfully!')"
+#
+# Check package versions:
+#   python -c "import pandas as pd; import sklearn; import xgboost as xgb; import lightgbm as lgb; print(f'pandas: {pd.__version__}\\nscikit-learn: {sklearn.__version__}\\nxgboost: {xgb.__version__}\\nlightgbm: {lgb.__version__}')"
+#
+# Test XGBoost functionality:
+#   python -c "import xgboost as xgb; import numpy as np; dtrain = xgb.DMatrix(np.random.rand(5,5), label=[0,1,0,1,0]); params = {'max_depth': 2}; model = xgb.train(params, dtrain, num_boost_round=2); print('✓ XGBoost working correctly!')"
+#
+# =============================================================================
+# TROUBLESHOOTING
+# =============================================================================
+#
+# If you encounter "ModuleNotFoundError":
+#   1. Ensure you're in the correct Python environment
+#   2. Reinstall the specific package: pip install <package_name> --upgrade
+#
+# If you encounter version conflicts:
+#   1. Create a fresh virtual environment:
+#      python -m venv dsa210_env
+#      source dsa210_env/bin/activate  # On Windows: dsa210_env\Scripts\activate
+#   2. Install requirements: pip install -r requirements.txt
+#
+# If installation is too slow:
+#   Use conda instead: conda install -c conda-forge --file requirements.txt
+#
+# =============================================================================
+# DATASET REQUIREMENTS
+# =============================================================================
+#
+# This project requires MASTER_enriched_data.csv (8,027 rows, 52 columns)
+# Place on Desktop or modify script paths accordingly
+# Dataset size: ~3-5 MB
+#
+# =============================================================================
+# HARDWARE RECOMMENDATIONS
+# =============================================================================
+#
+# Minimum:
+#   - RAM: 4 GB (8 GB recommended)
+#   - CPU: Dual-core processor
+#   - Storage: 500 MB free space
+#
+# Optimal:
+#   - RAM: 16 GB (for hyperparameter tuning)
+#   - CPU: Quad-core or higher (for parallel CV)
+#   - Storage: 2 GB free space (for models and visualizations)
+#
+# Expected runtimes (8,027 observations):
+#   - EDA.py: ~2-3 minutes
+#   - hypothesis_tests.py: ~1-2 minutes
+#   - ML_analysis_CORRECTED.py: ~5-8 minutes
+#   - Advanced_ML_CORRECTED.py: ~10-15 minutes (with GridSearchCV)
+#
+# =============================================================================
+# CONTACT & SUPPORT
+# =============================================================================
+#
+# For technical issues:
+#   1. Check error messages carefully
+#   2. Consult troubleshooting section above
+#   3. Review script comments and docstrings
+#
+# For package documentation:
+#   - pandas: https://pandas.pydata.org/docs/
+#   - scikit-learn: https://scikit-learn.org/stable/documentation.html
+#   - XGBoost: https://xgboost.readthedocs.io/
+#   - LightGBM: https://lightgbm.readthedocs.io/
+#
+# =============================================================================
+# LICENSE & ATTRIBUTION
+# =============================================================================
+#
+# Project: DSA210 Traffic & Air Quality Analysis
+# Student: Miray Erkoc (30815)
+# Institution: Sabanci University
+# Academic Year: 2025-2026 Fall
+#
+# All packages are open-source and subject to their respective licenses:
+#   - pandas, numpy, scipy, matplotlib, seaborn: BSD License
+#   - scikit-learn: BSD License
+#   - xgboost: Apache License 2.0
+#   - lightgbm: MIT License
+#
+# =============================================================================
+# LAST UPDATED
+# =============================================================================
+# Date: January 2, 2026
+# Version: 2.0 (Combined EDA + ML requirements)
+# Status: Complete and tested
+# =============================================================================
