@@ -192,10 +192,12 @@ Stage 3: Feature Engineering
 **Hypothesis:** Holidays and special observances show significantly lower traffic and pollution compared to normal days
 
 **Result:** ✅ **SUPPORTED** (2/2 tests significant)
-- Normal days: 2,847 vehicles/hour vs Special days: 2,456 vehicles/hour
-- Percentage change: -13.7% (p < 0.001, large effect size)
+-Normal days mean: 382 vehicles/hour
+-Percentage change: -31.6%(p < 0.001, large effect size)
 - Normal days NO2: 45.2 µg/m³ vs Special days: 41.8 µg/m³
 - Percentage change: -7.5% (p < 0.001)
+
+
 
 ### H4: Weekend Effect
 **Hypothesis:** Weekend air quality is better than weekdays due to reduced commuter traffic
