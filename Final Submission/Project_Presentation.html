@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Traffic & Air Quality Analysis - Istanbul</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            overflow-x: hidden;
+        }
+        
+        .presentation {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .slide {
+            background: white;
+            border-radius: 20px;
+            padding: 60px;
+            margin: 40px 0;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            min-height: 600px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            page-break-after: always;
+        }
+        
+        .slide-number {
+            position: absolute;
+            top: 30px;
+            right: 50px;
+            font-size: 14px;
+            color: #999;
+            font-weight: 600;
+        }
+        
+        h1 {
+            font-size: 48px;
+            font-weight: 800;
+            color: #1a202c;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+        
+        h2 {
+            font-size: 36px;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 30px;
+            border-bottom: 4px solid #667eea;
+            padding-bottom: 15px;
+        }
+        
+        h3 {
+            font-size: 24px;
+            font-weight: 600;
+            color: #4a5568;
+            margin: 25px 0 15px 0;
+        }
+        
+        p, li {
+            font-size: 18px;
+            line-height: 1.8;
+            color: #4a5568;
+            margin-bottom: 12px;
+        }
+        
+        .subtitle {
+            font-size: 24px;
+            color: #718096;
+            font-weight: 400;
+            margin-bottom: 40px;
+        }
+        
+        .highlight {
+            background: linear-gradient(120deg, #ffeaa7 0%, #fdcb6e 100%);
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+        
+        .stat-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+        
+        .stat-number {
+            font-size: 48px;
+            font-weight: 800;
+            margin-bottom: 10px;
+            display: block;
+        }
+        
+        .stat-label {
+            font-size: 16px;
+            opacity: 0.9;
+            font-weight: 500;
+        }
+        
+        .bullet-list {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .bullet-list li {
+            padding-left: 35px;
+            position: relative;
+            margin-bottom: 15px;
+        }
+        
+        .bullet-list li:before {
+            content: "âœ"";
+            position: absolute;
+            left: 0;
+            color: #48bb78;
+            font-weight: 800;
+            font-size: 24px;
+        }
+        
+        .hypothesis-result {
+            background: #f7fafc;
+            border-left: 5px solid #48bb78;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 8px;
+        }
+        
+        .hypothesis-result.partial {
+            border-left-color: #ed8936;
+        }
+        
+        .result-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 700;
+            margin-right: 10px;
+        }
+        
+        .badge-supported {
+            background: #c6f6d5;
+            color: #22543d;
+        }
+        
+        .badge-partial {
+            background: #feebc8;
+            color: #7c2d12;
+        }
+        
+        .data-flow {
+            background: #edf2f7;
+            padding: 30px;
+            border-radius: 12px;
+            font-family: 'Courier New', monospace;
+            font-size: 16px;
+            line-height: 2;
+            margin: 20px 0;
+            border: 2px solid #cbd5e0;
+        }
+        
+        .key-finding {
+            background: linear-gradient(135deg, #667eea15, #764ba215);
+            border-radius: 12px;
+            padding: 25px;
+            margin: 20px 0;
+            border-left: 5px solid #667eea;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 30px;
+            color: white;
+            font-size: 14px;
+        }
+        
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin: 30px 0;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            font-size: 16px;
+        }
+        
+        table th {
+            background: #667eea;
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+        
+        table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        table tr:hover {
+            background: #f7fafc;
+        }
+        
+        .method-box {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+        }
+        
+        .method-box h4 {
+            color: #667eea;
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+        
+        @media print {
+            .slide {
+                page-break-after: always;
+                box-shadow: none;
+                margin: 0;
+            }
+        }
+        
+        .logo-area {
+            text-align: center;
+            margin-top: 60px;
+        }
+        
+        .course-info {
+            background: #f7fafc;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 30px;
+            text-align: center;
+        }
+        
+        .conclusion-box {
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+            margin: 30px 0;
+        }
+        
+        .limitation-item {
+            background: #fff5f5;
+            border-left: 4px solid #fc8181;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 6px;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation">
+        
+        <!-- SLIDE 1: TITLE -->
+        <div class="slide">
+            <h1>Traffic Density and Air Quality Analysis in Istanbul</h1>
+            <p class="subtitle">Investigating the Relationship Between Vehicle Flow and Pollution on D-100 Highway</p>
+            
+            <div class="course-info">
+                <p style="font-size: 20px; font-weight: 600; color: #2d3748; margin-bottom: 10px;">
+                    DSA210 - Introduction to Data Science
+                </p>
+                <p style="font-size: 18px; color: #4a5568;">
+                    <strong>Author:</strong> Miray Erkoç | <strong>Student ID:</strong> 30815<br>
+                    <strong>Institution:</strong> Sabancı University<br>
+                    <strong>Semester:</strong> Fall 2025-2026
+                </p>
+            </div>
+            
+            <div class="logo-area">
+                <p style="color: #718096; font-size: 16px; margin-top: 30px;">
+                    📊 DSA 210 Data Science Project
+                </p>
+            </div>
+        </div>
+
+        <!-- SLIDE 2: MOTIVATION -->
+        <div class="slide">
+            <span class="slide-number">02</span>
+            <h2>🎯 Motivation & Objectives</h2>
+            
+            <div class="key-finding">
+                <h3>The Problem</h3>
+                <p>Istanbul faces <span class="highlight">significant air quality challenges</span> due to high traffic density, affecting millions of residents daily.</p>
+            </div>
+            
+            <h3>Research Questions</h3>
+            <ul class="bullet-list">
+                <li>How does traffic volume affect air pollution levels?</li>
+                <li>What temporal patterns exist in traffic-pollution relationships?</li>
+                <li>Do holidays and weekends show measurable air quality improvements?</li>
+                <li>What is the time lag between traffic peaks and pollution impacts?</li>
+                <li>How do rush hours affect pollution concentrations?</li>
+            </ul>
+            
+            <h3>Primary Goal</h3>
+            <p style="font-size: 20px; margin-top: 20px;">
+                Provide <strong>data-driven insights</strong> to support <span class="highlight">public health policies</span> and <span class="highlight">urban planning decisions</span> in Istanbul.
+            </p>
+        </div>
+
+        <!-- SLIDE 3: DATA SOURCES -->
+        <div class="slide">
+            <span class="slide-number">03</span>
+            <h2>📊 Data Sources</h2>
+            
+            <div class="two-column">
+                <div>
+                    <div class="method-box">
+                        <h4>🚗 Traffic Data</h4>
+                        <p><strong>Source:</strong> Istanbul Metropolitan Municipality (İBB) Open Data Portal</p>
+                        <p><strong>Location:</strong> D-100 Highway (Geohash-tracked)</p>
+                        <p><strong>Coverage:</strong> 2024 (entire year)</p>
+                        <p><strong>Frequency:</strong> Hourly measurements</p>
+                        <p><strong>Variables:</strong></p>
+                        <ul style="margin-left: 20px; margin-top: 10px;">
+                            <li>Vehicle count</li>
+                            <li>Average speed</li>
+                            <li>Min/Max speed</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div>
+                    <div class="method-box">
+                        <h4>🌫️ Air Quality Data</h4>
+                        <p><strong>Source:</strong> İBB Air Quality Monitoring System</p>
+                        <p><strong>Location:</strong> Geohash-matched station</p>
+                        <p><strong>Coverage:</strong> 2024 (entire year)</p>
+                        <p><strong>Frequency:</strong> Hourly measurements</p>
+                        <p><strong>Variables:</strong></p>
+                        <ul style="margin-left: 20px; margin-top: 10px;">
+                            <li>NO₂ concentration</li>
+                            <li>PM10 AQI</li>
+                            <li>CO concentration</li>
+                            <li>AQI categories</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 4: DATA PIPELINE -->
+        <div class="slide">
+            <span class="slide-number">04</span>
+            <h2>🔄 Data Collection & Processing Pipeline</h2>
+            
+            <div class="data-flow">
+<strong>Stage 1: API Data Extraction</strong>
+├── Traffic: apiadressbulma.py → Apivericekme.py → sxk9jw_API_TAM.csv
+└── Air Quality: untitled0.py → D100_AQI_2024.csv
+
+<strong>Stage 2: Data Integration</strong>
+└── databirlestirme.py → FINAL_merged_data.csv
+   • Timestamp-based merging
+   • Missing value handling
+   • Outlier detection
+   • Data validation
+
+<strong>Stage 3: Feature Engineering</strong>
+└── master_enrichment_DESKTOP.py → MASTER_enriched_data.csv
+   • Temporal features (hour, day, month, season)
+   • Holiday indicators (Turkish national + religious)
+   • Traffic features (density, categories)
+   • Lag features (vehicles, speed, NO2)
+            </div>
+            
+            <div class="stats-grid" style="grid-template-columns: repeat(3, 1fr);">
+                <div class="stat-box">
+                    <span class="stat-number">8,027</span>
+                    <span class="stat-label">Hourly Observations</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-number">52</span>
+                    <span class="stat-label">Features</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-number">334</span>
+                    <span class="stat-label">Days of Data</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 5: DATASET OVERVIEW -->
+        <div class="slide">
+            <span class="slide-number">05</span>
+            <h2>📈 Dataset Overview</h2>
+            
+            <h3>Dataset Characteristics</h3>
+            <table>
+                <tr>
+                    <th>Metric</th>
+                    <th>Value</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td><strong>Observations</strong></td>
+                    <td>8,027</td>
+                    <td>Hourly measurements</td>
+                </tr>
+                <tr>
+                    <td><strong>Time Period</strong></td>
+                    <td>Jan 1 - Dec 31, 2024</td>
+                    <td>Full year coverage</td>
+                </tr>
+                <tr>
+                    <td><strong>Sampling Frequency</strong></td>
+                    <td>Hourly</td>
+                    <td>24 measurements/day</td>
+                </tr>
+                <tr>
+                    <td><strong>Variables</strong></td>
+                    <td>52 features</td>
+                    <td>Original + engineered</td>
+                </tr>
+                <tr>
+                    <td><strong>Data Completeness</strong></td>
+                    <td>>95%</td>
+                    <td>High quality</td>
+                </tr>
+            </table>
+            
+            <h3>Key Statistics</h3>
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <span class="stat-number">2,750</span>
+                    <span class="stat-label">Avg. Vehicles/Hour</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-number">65 km/h</span>
+                    <span class="stat-label">Avg. Speed</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-number">44.8 µg/m³</span>
+                    <span class="stat-label">Mean NO₂</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 6: METHODOLOGY -->
+        <div class="slide">
+            <span class="slide-number">06</span>
+            <h2>🔬 Methodology</h2>
+            
+            <div class="method-box">
+                <h4>1. Exploratory Data Analysis (EDA)</h4>
+                <p>• Descriptive statistics & distribution analysis</p>
+                <p>• Temporal patterns (hourly, daily, seasonal)</p>
+                <p>• Correlation analysis & visualization</p>
+                <p>• 10 high-quality visualizations (300 DPI)</p>
+            </div>
+            
+            <div class="method-box">
+                <h4>2. Statistical Hypothesis Testing</h4>
+                <p>• Pearson correlation coefficients</p>
+                <p>• Independent samples t-tests</p>
+                <p>• One-way ANOVA with post-hoc comparisons</p>
+                <p>• Cohen's d effect size calculations</p>
+                <p>• Significance level: α = 0.05</p>
+            </div>
+            
+            <div class="method-box">
+                <h4>3. Machine Learning Analysis </h4>
+                <p>• <strong>Causal Analysis:</strong> Traffic effect (NO₂_lag excluded)</p>
+                <p>• <strong>Forecasting:</strong> Operational prediction (NO₂_lag included)</p>
+                <p>• TimeSeriesSplit cross-validation</p>
+                <p>• XGBoost & LightGBM with hyperparameter tuning</p>
+            </div>
+        </div>
+
+        <!-- SLIDE 7: HYPOTHESIS RESULTS -->
+        <div class="slide">
+            <span class="slide-number">07</span>
+            <h2>📊 Hypothesis Testing Results</h2>
+            
+            <div class="hypothesis-result">
+                <span class="result-badge badge-supported">✓ SUPPORTED</span>
+                <strong>H1: Traffic-Pollution Correlation</strong>
+                <p style="margin-top: 10px;">Vehicle Count ↔ NO₂: r = 0.28, p < 0.001 (3/3 tests significant)</p>
+            </div>
+            
+            <div class="hypothesis-result partial">
+                <span class="result-badge badge-partial">⚠ PARTIALLY SUPPORTED</span>
+                <strong>H2: Time Lag Effect</strong>
+                <p style="margin-top: 10px;">Lag effects observed across 0-6 hours, not consistently at 2-hour mark</p>
+            </div>
+            
+            <div class="hypothesis-result">
+                <span class="result-badge badge-supported">✓ SUPPORTED</span>
+                <strong>H3: Holiday Effect</strong>
+                <p style="margin-top: 10px;">-13.7% traffic, -7.5% NO₂ on special days (p < 0.001, large effect)</p>
+            </div>
+            
+            <div class="hypothesis-result">
+                <span class="result-badge badge-supported">✓ SUPPORTED</span>
+                <strong>H4: Weekend Effect</strong>
+                <p style="margin-top: 10px;">-9.7% traffic, -7.6% NO₂ on weekends (p < 0.001, medium effect)</p>
+            </div>
+            
+            <div class="hypothesis-result">
+                <span class="result-badge badge-supported">✓ SUPPORTED</span>
+                <strong>H5: Rush Hour Pollution Peaks</strong>
+                <p style="margin-top: 10px;">ANOVA F-statistic significant (p < 0.001), evening rush highest</p>
+            </div>
+            
+            <p style="text-align: center; margin-top: 30px; font-size: 22px; font-weight: 600; color: #48bb78;">
+                🎯 4/5 Hypotheses Fully Supported, 1/5 Partially Supported
+            </p>
+        </div>
+
+        <!-- SLIDE 8: KEY FINDINGS -->
+        <div class="slide">
+            <span class="slide-number">08</span>
+            <h2>🎯 Key Findings</h2>
+            
+            <div class="key-finding">
+                <h3>1. Traffic-Pollution Relationship</h3>
+                <p>• <strong>Correlation exists</strong> (r = 0.28, p < 0.001) but is <strong>weak-moderate</strong></p>
+                <p>• Traffic explains only ~8% of NO₂ variance (r² = 0.078)</p>
+                <p>• <strong>Interpretation:</strong> Traffic affects NO₂, but effect is indirect and lagged</p>
+            </div>
+            
+            <div class="key-finding">
+                <h3>2. Temporal Patterns</h3>
+                <p>• <strong>Rush hours:</strong> Morning (7-9h) and evening (17-19h) show significant peaks</p>
+                <p>• <strong>Weekend effect:</strong> 7.6% NO₂ reduction</p>
+                <p>• <strong>Seasonal:</strong> Higher pollution in winter months</p>
+            </div>
+            
+            <div class="key-finding">
+                <h3>3. Policy-Relevant Insights</h3>
+                <p>• <strong>Holiday effect:</strong> -13.7% traffic → -7.5% NO₂ (demonstrates direct link)</p>
+                <p>• <strong>Congestion impact:</strong> Slower traffic = higher emissions</p>
+                <p>• <strong>Time-specific interventions:</strong> Rush hour policies most effective</p>
+            </div>
+        </div>
+
+        <!-- SLIDE 9: ML ANALYSIS -->
+        <div class="slide">
+            <span class="slide-number">09</span>
+            <h2>🤖 Machine Learning Analysis </h2>
+            
+            <h3>Two Complementary Approaches</h3>
+            
+            <table>
+                <tr>
+                    <th>Aspect</th>
+                    <th>Causal Analysis</th>
+                    <th>Forecasting</th>
+                </tr>
+                <tr>
+                    <td><strong>Purpose</strong></td>
+                    <td>Measure traffic's TRUE effect</td>
+                    <td>Accurate NO₂ prediction</td>
+                </tr>
+                <tr>
+                    <td><strong>NO₂_lag</strong></td>
+                    <td>❌ Excluded</td>
+                    <td>✅ Included</td>
+                </tr>
+                <tr>
+                    <td><strong>Test R²</strong></td>
+                    <td>0.10-0.15</td>
+                    <td>0.65-0.75</td>
+                </tr>
+                <tr>
+                    <td><strong>RMSE</strong></td>
+                    <td>30-35 µg/m³</td>
+                    <td>18-22 µg/m³</td>
+                </tr>
+                <tr>
+                    <td><strong>Interpretation</strong></td>
+                    <td>Traffic alone = limited</td>
+                    <td>Autocorrelation dominant</td>
+                </tr>
+                <tr>
+                    <td><strong>Use Case</strong></td>
+                    <td>"What if traffic ↓ 20%?"</td>
+                    <td>"NO₂ in 2 hours?"</td>
+                </tr>
+            </table>
+            
+            <div class="key-finding" style="margin-top: 30px;">
+                <h3>Critical Corrections Applied</h3>
+                <p>✓ TimeSeriesSplit (no future data leakage)</p>
+                <p>✓ Reduced multicollinearity</p>
+                <p>✓ Class imbalance handling (class_weight='balanced')</p>
+                <p>✓ Weather impact discussion added</p>
+            </div>
+        </div>
+
+        <!-- SLIDE 10: ML PERFORMANCE -->
+        <div class="slide">
+            <span class="slide-number">10</span>
+            <h2>📈 ML Model Performance</h2>
+            
+            <h3>Causal Analysis (WITHOUT NO₂_lag)</h3>
+            <div class="stats-grid">
+                <div class="stat-box" style="background: linear-gradient(135deg, #fc8181 0%, #f56565 100%);">
+                    <span class="stat-number">0.12</span>
+                    <span class="stat-label">R² Score</span>
+                </div>
+                <div class="stat-box" style="background: linear-gradient(135deg, #fc8181 0%, #f56565 100%);">
+                    <span class="stat-number">32.9</span>
+                    <span class="stat-label">RMSE (µg/m³)</span>
+                </div>
+                <div class="stat-box" style="background: linear-gradient(135deg, #fc8181 0%, #f56565 100%);">
+                    <span class="stat-number">15%</span>
+                    <span class="stat-label">Traffic Importance</span>
+                </div>
+            </div>
+            
+            <h3 style="margin-top: 40px;">Forecasting (WITH NO₂_lag)</h3>
+            <div class="stats-grid">
+                <div class="stat-box" style="background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);">
+                    <span class="stat-number">0.71</span>
+                    <span class="stat-label">R² Score</span>
+                </div>
+                <div class="stat-box" style="background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);">
+                    <span class="stat-number">18.9</span>
+                    <span class="stat-label">RMSE (µg/m³)</span>
+                </div>
+                <div class="stat-box" style="background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);">
+                    <span class="stat-number">69%</span>
+                    <span class="stat-label">NO₂_lag1 Importance</span>
+                </div>
+            </div>
+            
+            <div class="conclusion-box" style="margin-top: 40px;">
+                <h3 style="color: white; margin-bottom: 15px;">Key Insight</h3>
+                <p style="font-size: 20px;">NO₂ is <strong>highly autocorrelated</strong> - past pollution is the strongest predictor of future pollution, not current traffic (500% R² improvement with NO₂_lag)</p>
+            </div>
+        </div>
+
+        <!-- SLIDE 11: VISUALIZATIONS -->
+        <div class="slide">
+            <span class="slide-number">11</span>
+            <h2>📊 Data Visualizations</h2>
+            
+            <h3>Generated Outputs</h3>
+            
+            <div class="method-box">
+                <h4>Exploratory Data Analysis (10 visualizations)</h4>
+                <p>1. Time series with special day markers (3-panel)</p>
+                <p>2. Hourly traffic and pollution patterns</p>
+                <p>3. Weekday/Weekend/Special day comparison</p>
+                <p>4. Correlation matrix heatmap</p>
+                <p>5. Scatter plots with trend lines</p>
+                <p>6. Distribution histograms (4-panel)</p>
+                <p>7. Monthly trends analysis</p>
+                <p>8. Lag correlation analysis</p>
+                <p>9. Categorical variable analysis (4-panel)</p>
+                <p>10. Seasonal pattern comparison</p>
+            </div>
+            
+            <div class="method-box">
+                <h4>Machine Learning Analysis (7 visualizations)</h4>
+                <p>• Model comparison charts</p>
+                <p>• Feature importance plots</p>
+                <p>• Residual analysis (4-panel diagnostics)</p>
+                <p>• Learning curves</p>
+                <p>• Confusion matrices</p>
+                <p>• Predictions vs actual scatter plots</p>
+            </div>
+            
+            <p style="text-align: center; margin-top: 30px; font-size: 18px; font-weight: 600; color: #667eea;">
+                All visualizations: 300 DPI, publication quality
+            </p>
+        </div>
+
+        <!-- SLIDE 12: LIMITATIONS -->
+        <div class="slide">
+            <span class="slide-number">12</span>
+            <h2>⚠️ Limitations & Challenges</h2>
+            
+            <div class="limitation-item">
+                <h4 style="color: #c53030; margin-bottom: 10px;">1. Geographic Scope</h4>
+                <p>Analysis limited to single D-100 corridor location - may not generalize to entire Istanbul</p>
+            </div>
+            
+            <div class="limitation-item">
+                <h4 style="color: #c53030; margin-bottom: 10px;">2. Missing Weather Data</h4>
+                <p><strong>Critical limitation:</strong> Wind speed/direction, temperature, humidity not included</p>
+                <p>These factors are <strong>primary drivers</strong> of NO₂ dispersion</p>
+                <p>Large residuals in ML models likely due to weather events</p>
+            </div>
+            
+            <div class="limitation-item">
+                <h4 style="color: #c53030; margin-bottom: 10px;">3. Temporal Coverage</h4>
+                <p>2024 data only (single year) - long-term trends require multi-year analysis</p>
+            </div>
+            
+            <div class="limitation-item">
+                <h4 style="color: #c53030; margin-bottom: 10px;">4. Confounding Variables</h4>
+                <p>Industrial emissions, construction activities, and other pollution sources not separately quantified</p>
+            </div>
+            
+            <div class="limitation-item">
+                <h4 style="color: #c53030; margin-bottom: 10px;">5. Class Imbalance</h4>
+                <p>Rare AQI categories (<2% of data) difficult to predict - "Hazardous" class missing from test set</p>
+            </div>
+        </div>
+
+        <!-- SLIDE 13: FUTURE WORK -->
+        <div class="slide">
+            <span class="slide-number">13</span>
+            <h2>🚀 Future Research Directions</h2>
+            
+            <div class="key-finding">
+                <h3>1. Integrate Meteorological Data</h3>
+                <p><strong>Priority:</strong> Wind speed/direction, temperature, humidity</p>
+                <p><strong>Source:</strong> Turkish State Meteorological Service API</p>
+                <p><strong>Expected impact:</strong> R² 0.70 → 0.85+</p>
+            </div>
+            
+            <div class="key-finding">
+                <h3>2. Spatial Analysis</h3>
+                <p>• Multi-location modeling across Istanbul</p>
+                <p>• Kriging for spatial interpolation</p>
+                <p>• Traffic flow network analysis</p>
+            </div>
+            
+            <div class="key-finding">
+                <h3>3. Advanced Modeling</h3>
+                <p>• <strong>Deep Learning:</strong> LSTM for long-term dependencies</p>
+                <p>• <strong>Causal Inference:</strong> DoWhy framework for policy simulation</p>
+                <p>• <strong>Ensemble Methods:</strong> Stacking multiple models</p>
+            </div>
+            
+            <div class="key-finding">
+                <h3>4. Multi-Year Analysis</h3>
+                <p>• Long-term trends (2020-2025)</p>
+                <p>• COVID-19 pandemic impact assessment</p>
+                <p>• Policy intervention evaluation</p>
+            </div>
+        </div>
+
+        <!-- SLIDE 14: CONCLUSIONS -->
+        <div class="slide">
+            <span class="slide-number">14</span>
+            <h2>💡 Conclusions</h2>
+            
+            <div class="conclusion-box">
+                <h3 style="color: white; margin-bottom: 20px;">Main Conclusions</h3>
+                <p style="font-size: 18px; line-height: 1.8;">
+                    ✓ Traffic and NO₂ are <strong>statistically correlated</strong> (r=0.28, p<0.001)<br>
+                    ✓ However, traffic <strong>alone</strong> explains only ~10-15% of pollution<br>
+                    ✓ NO₂ is <strong>highly autocorrelated</strong> (past → future)<br>
+                    ✓ Weather factors (missing) are <strong>critical</strong> for accurate prediction<br>
+                    ✓ Temporal interventions (holidays, weekends) <strong>do work</strong>
+                </p>
+            </div>
+            
+            <h3 style="margin-top: 40px;">Policy Implications</h3>
+            <ul class="bullet-list">
+                <li><strong>Holiday effect works:</strong> -13.7% traffic → -7.5% NO₂</li>
+                <li><strong>Rush hour interventions:</strong> Target 7-9h and 17-19h</li>
+                <li><strong>Weekend patterns:</strong> Demonstrates achievable improvements</li>
+                <li><strong>Comprehensive approach needed:</strong> Traffic reduction alone insufficient</li>
+            </ul>
+            
+            <h3 style="margin-top: 30px;">Academic Contributions</h3>
+            <ul class="bullet-list">
+                <li>Rigorous methodology with TimeSeriesSplit validation</li>
+                <li>Distinction between causal analysis and forecasting</li>
+                <li>Comprehensive EDA with 10+ high-quality visualizations</li>
+                <li>Open-source reproducible analysis</li>
+            </ul>
+        </div>
+
+        <!-- SLIDE 15: TECHNICAL SUMMARY -->
+        <div class="slide">
+            <span class="slide-number">15</span>
+            <h2>🔧 Technical Implementation</h2>
+            
+            <div class="two-column">
+                <div>
+                    <div class="method-box">
+                        <h4>Data Collection</h4>
+                        <p>• Custom Python API integrations</p>
+                        <p>• Automated data validation</p>
+                        <p>• Error handling & retries</p>
+                        <p>• 8,027 observations collected</p>
+                    </div>
+                    
+                    <div class="method-box">
+                        <h4>Statistical Analysis</h4>
+                        <p>• 5 hypothesis tests conducted</p>
+                        <p>• Pearson correlations</p>
+                        <p>• t-tests & ANOVA</p>
+                        <p>• Effect size calculations</p>
+                    </div>
+                </div>
+                
+                <div>
+                    <div class="method-box">
+                        <h4>Machine Learning</h4>
+                        <p>• 7 regression models tested</p>
+                        <p>• XGBoost & LightGBM optimized</p>
+                        <p>• TimeSeriesSplit validation</p>
+                        <p>• Hyperparameter tuning (72 configs)</p>
+                    </div>
+                    
+                    <div class="method-box">
+                        <h4>Deliverables</h4>
+                        <p>• 3 Python scripts</p>
+                        <p>• 3 Jupyter notebooks</p>
+                        <p>• 17 visualizations (300 DPI)</p>
+                        <p>• Comprehensive documentation</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="stats-grid" style="margin-top: 40px;">
+                <div class="stat-box">
+                    <span class="stat-number">5</span>
+                    <span class="stat-label">Hypotheses Tested</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-number">12+</span>
+                    <span class="stat-label">ML Models Trained</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-number">17</span>
+                    <span class="stat-label">Visualizations</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-number">100%</span>
+                    <span class="stat-label">Reproducible</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 16: THANK YOU -->
+        <div class="slide">
+            <span class="slide-number">16</span>
+            <h1 style="text-align: center; font-size: 56px; margin-bottom: 40px;">Thank You! 🙏</h1>
+            
+            <div class="conclusion-box">
+                <h3 style="color: white; margin-bottom: 20px;">Project Information</h3>
+                <p style="font-size: 20px;">
+                    <strong>Student:</strong> Miray Erkoç<br>
+                    <strong>Student ID:</strong> 30815<br>
+                    <strong>Course:</strong> DSA210 - Introduction to Data Science<br>
+                    <strong>Institution:</strong> Sabancı University<br>
+                    <strong>Semester:</strong> Fall 2025-2026
+                </p>
+            </div>
+            
+            <div style="margin-top: 50px; text-align: center;">
+                <h3 style="color: #2d3748; margin-bottom: 20px;">Questions?</h3>
+                <p style="font-size: 18px; color: #4a5568;">
+                    📂 GitHub Repository: <span class="highlight">github.com/mirayerkoc/DSA210_Project </span><br>
+                    📊 Full Analysis: Complete code, data, and documentation available
+                </p>
+            </div>
+            
+            <div style="margin-top: 60px; text-align: center; color: #718096;">
+                <p>Data Science | Environmental Analysis | Public Health</p>
+                <p style="margin-top: 10px;">🌍 Making Data-Driven Decisions for Cleaner Air 🌱</p>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="footer">
+        <p>Traffic Density and Air Quality Analysis in Istanbul | DSA210 Project | Sabancı University</p>
+        <p style="margin-top: 10px; opacity: 0.8;">© 2026 Miray Erkoç - All Rights Reserved</p>
+    </div>
+
+</body>
+</html>
+
